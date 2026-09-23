@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -30,8 +30,8 @@ using System.Runtime.InteropServices;
 //      生成号
 //      修订号
 //
-[assembly: AssemblyVersion("5.8.*")]
-//[assembly: AssemblyFileVersion("0.0.0.0")]
+[assembly: AssemblyVersion("5.9.0.0")]
+[assembly: AssemblyFileVersion("5.9.0.0")]
 [assembly: NeutralResourcesLanguage("zh-Hant")]
 
-[assembly: System.Reflection.AssemblyInformationalVersion("5.8.5(2604130742)")]
+[assembly: System.Reflection.AssemblyInformationalVersion("5.9.0(260921-BAC)")]
