@@ -124,6 +124,8 @@
   <system:String x:Key="UpdateChannel">更新通道</system:String>
   <system:String x:Key="Stable">穩定版</system:String>
   <system:String x:Key="Development">測試版</system:String>
+  <system:String x:Key="Regular">一般登入</system:String>
+  <system:String x:Key="QrCode">QR登入</system:String>
   <system:String x:Key="ThemeColor">主題顏色</system:String>
   <system:String x:Key="AutoCheckUpdate">有新版本時提示更新</system:String>
   <system:String x:Key="RunAfterLogin">登入完成後開啟遊戲</system:String>
@@ -424,8 +426,12 @@
     >檢測到新版本 {0} 當前: {1}\r\n\r\n{2}\r\n\r\n是否打開下載頁面？</system:String
   >
   <system:String x:Key="Language">程式語言</system:String>
+  <system:String x:Key="LoginMode">登入方式</system:String>
   <system:String x:Key="InputTotp">輸入應用程式內顯示的雙重驗證碼</system:String>
   <system:String x:Key="CopyDeeplink">複製 Deeplink</system:String>
+  <system:String x:Key="CopyQRCode">複製 QR Code 圖片</system:String>
+  <system:String x:Key="CopyQRCodeSuccess">QR Code 已複製</system:String>
+  <system:String x:Key="EnlargeQRCode">放大 QR Code</system:String>
   <system:String x:Key="CopyDeeplinkSuccess">Deeplink 已複製到剪貼簿。</system:String>
   <system:String x:Key="CopyDeeplinkNotReady"
     >Deeplink 尚未取得，請等待 QR Code 載入完成。</system:String
@@ -441,9 +447,9 @@
     >無法載入驗證碼圖片（Session 可能已過期）</system:String
   >
   <system:String x:Key="AdvanceCheckFillEmailAndCaptcha">請填寫 Email 同驗證碼</system:String>
-  <system:String x:Key="GamePassLogin">GamePass 登入</system:String>
+  <system:String x:Key="GamePassLogin">GamaPass 登入</system:String>
   <system:String x:Key="GamePassWaiting">正在等待 GamePass 認證...</system:String>
-  <system:String x:Key="GamePassOpen">開啟 GamePass 登入</system:String>
+  <system:String x:Key="GamePassOpen">開啟 GamaPass 登入</system:String>
   <system:String x:Key="SessionKeyFailed">無法取得 SessionKey，請稍後再試</system:String>
   <system:String x:Key="ConnectionFailed">連線失敗，請檢查網路連線</system:String>
   <system:String x:Key="LegacyDataMigrateSuccess"
