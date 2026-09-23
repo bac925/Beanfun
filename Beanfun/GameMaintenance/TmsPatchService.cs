@@ -1,6 +1,7 @@
 using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -62,7 +63,7 @@ public sealed class TmsPatchService
         return route;
     }
 
-    public async Task UpdateAsync(string root, int current, int target, TmsProductInfo info,
+    public async Task UpdateAsync(string root, int current, int target, TmsProductInfo info, int? targetMinor,
         IProgress<PatchProgress>? progress, CancellationToken ct)
     {
         if (current > target) throw new InvalidOperationException("本機版本高於官方版本，拒絕降版。 ");
@@ -91,20 +92,31 @@ public sealed class TmsPatchService
                 }
             }
         }
-        await ApplyExePatchIfAvailableAsync(root, target, progress, ct);
+        await ApplyExePatchIfAvailableAsync(root, target, targetMinor, progress, ct);
     }
 
-    public async Task<bool> ApplyExePatchIfAvailableAsync(string root, int version, IProgress<PatchProgress>? progress, CancellationToken ct)
+    public async Task<bool> ApplyExePatchIfAvailableAsync(string root, int version, int? targetMinor, IProgress<PatchProgress>? progress, CancellationToken ct)
     {
+        string existingExe = Path.Combine(root, "MapleStory.exe");
+        if (File.Exists(existingExe) && targetMinor.HasValue)
+        {
+            var local = FileVersionInfo.GetVersionInfo(existingExe);
+            if (local.ProductMinorPart == version && local.FileBuildPart >= targetMinor.Value)
+                return false;
+        }
         string url = BuildExePatchUrl(version);
         long size = await ProbeSizeAsync(url, ct);
+        ct.ThrowIfCancellationRequested();
         if (size <= 0) return false;
-        string existingExe = Path.Combine(root, "MapleStory.exe");
-        if (File.Exists(existingExe) && new FileInfo(existingExe).Length == size) return false;
         string tmp = Path.Combine(root, "ExePatch.dat");
         progress?.Report(new PatchProgress { Phase = "主程式 Hotfix", Detail = $"下載 ExePatch.dat ({FormatBytes(size)})" });
         await DownloadWithResumeAsync(url, tmp, size, progress, ct);
         if (new FileInfo(tmp).Length != size) throw new InvalidDataException("ExePatch.dat 大小驗證失敗。 ");
+        var downloaded = FileVersionInfo.GetVersionInfo(tmp);
+        if (downloaded.ProductMinorPart != version ||
+            (targetMinor.HasValue && downloaded.FileBuildPart != targetMinor.Value))
+            throw new InvalidDataException($"下載的 ExePatch.dat 版本不符：預期 V{version}.{targetMinor}，實際 {downloaded.ProductMinorPart}.{downloaded.FileBuildPart}；未替換遊戲主程式。");
+        ct.ThrowIfCancellationRequested();
         string exe = existingExe;
         string bak = exe + ".bacbak";
         try
