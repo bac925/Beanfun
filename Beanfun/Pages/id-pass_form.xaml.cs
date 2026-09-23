@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,10 @@ namespace Beanfun
         public id_pass_form()
         {
             InitializeComponent();
+
+            // Gama Pass 僅台灣區使用；這裡同步一次可見狀態，避免按鈕因 XAML 預設 Collapsed 而未被顯示。
+            btn_GamePass.Visibility =
+                App.LoginRegion == "TW" ? Visibility.Visible : Visibility.Collapsed;
 
             this.Loaded += (sender, e) =>
             {
@@ -269,29 +274,38 @@ namespace Beanfun
             App.MainWnd.loginMethodChanged();
         }
 
-        private async void btn_GamePass_Click(object sender, RoutedEventArgs e)
+        private void btn_GamePass_Click(object sender, RoutedEventArgs e)
         {
             btn_GamePass.IsEnabled = false;
+
             try
             {
-                var client = new BeanfunClient();
-                string skey = await System.Threading.Tasks.Task.Run(() => client.GetSessionkey());
-                if (string.IsNullOrEmpty(skey))
+                var browser = App.MainWnd.OpenGamePassLogin();
+
+                browser.Closed += (s, args) =>
                 {
-                    MessageBox.Show(TryFindResource("SessionKeyFailed") as string);
-                    return;
-                }
-                App.MainWnd.bfClient = client;
-                new GamePassBrowser(skey).Show();
+                    Dispatcher.Invoke(() =>
+                    {
+                        btn_GamePass.IsEnabled = true;
+                    });
+                };
             }
-            catch
-            {
-                MessageBox.Show(TryFindResource("ConnectionFailed") as string);
-            }
-            finally
+            catch (Exception ex)
             {
                 btn_GamePass.IsEnabled = true;
+
+                MessageBox.Show(
+                    "Gama Pass 登入視窗開啟失敗。\r\n\r\n" + ex.Message,
+                    "Gama Pass",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
             }
+        }
+
+        private void btn_StartGame_Click(object sender, RoutedEventArgs e)
+        {
+            App.MainWnd.runGame();
         }
     }
 }

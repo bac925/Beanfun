@@ -107,9 +107,93 @@
             </Button>
           </DockPanel>
         </TextBlock>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
+          <Button
+            x:Name="btn_CopyQR"
+            Width="20"
+            Height="20"
+            Margin="5 0"
+            Cursor="Hand"
+            IsEnabled="False"
+            ToolTip="{DynamicResource CopyQRCode}"
+            Click="CopyQRCode_Click"
+          >
+            <Button.Resources>
+              <Style TargetType="{x:Type Button}">
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                      <TextBlock>
+                        <Path
+                          x:Name="Path"
+                          Fill="#848484"
+                          Stretch="Uniform"
+                          Data="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"
+                        />
+                      </TextBlock>
+                      <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                          <Setter TargetName="Path" Property="Fill" Value="#484848" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                          <Setter TargetName="Path" Property="Fill" Value="#3AC3F7" />
+                        </Trigger>
+                      </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+            </Button.Resources>
+          </Button>
+          <Button
+            x:Name="btn_EnlargeQR"
+            Width="20"
+            Height="20"
+            Margin="5 0"
+            Cursor="Hand"
+            IsEnabled="False"
+            ToolTip="{DynamicResource EnlargeQRCode}"
+            Click="EnlargeQRCode_Click"
+          >
+            <Button.Resources>
+              <Style TargetType="{x:Type Button}">
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Template">
+                  <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                      <TextBlock>
+                        <Path
+                          x:Name="Path"
+                          Fill="#848484"
+                          Stretch="Uniform"
+                          Data="M15 3l2.3 2.3-2.89 2.87 1.42 1.42L18.7 6.7 21 9V3h-6zM3 9l2.3-2.3 2.87 2.89 1.42-1.42L6.7 5.3 9 3H3v6zm6 12l-2.3-2.3 2.89-2.87-1.42-1.42L5.3 17.3 3 15v6h6zm12-6l-2.3 2.3-2.87-2.89-1.42 1.42 2.89 2.87L15 21h6v-6z"
+                        />
+                      </TextBlock>
+                      <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                          <Setter TargetName="Path" Property="Fill" Value="#484848" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                          <Setter TargetName="Path" Property="Fill" Value="#3AC3F7" />
+                        </Trigger>
+                      </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                  </Setter.Value>
+                </Setter>
+              </Style>
+            </Button.Resources>
+          </Button>
+        </StackPanel>
         <Button
           x:Name="btn_CopyDeeplink"
-          Content="{DynamicResource CopyDeeplink}"
+          Content="複製連結"
           Height="30"
           Width="250"
           FontWeight="Bold"
@@ -118,20 +202,107 @@
           Foreground="Black"
           Click="btn_CopyDeeplink_Click"
         />
-        <Button
-          x:Name="btn_back"
-          Content="{DynamicResource BackRegularLogin}"
-          Height="30"
-          Width="250"
-          FontWeight="Bold"
-          Margin="0 10 0 20"
-          IsDefault="True"
-          Background="#7FF5F5F5"
-          Foreground="Black"
-          Click="btn_back_Click"
-        />
+        <Grid Margin="0 10 0 20" Width="250">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <Button
+            Grid.Column="0"
+            x:Name="btn_back"
+            Content="{DynamicResource BackRegularLogin}"
+            Height="30"
+            FontWeight="Bold"
+            Margin="0 0 5 0"
+            IsDefault="True"
+            Background="#7FF5F5F5"
+            Foreground="Black"
+            Click="btn_back_Click"
+          />
+          <Button
+            Grid.Column="1"
+            x:Name="btn_StartGame"
+            Content="{DynamicResource GameStart}"
+            Height="30"
+            Padding="10 0"
+            FontWeight="Bold"
+            Background="#7FF5F5F5"
+            Foreground="Black"
+            Click="btn_StartGame_Click"
+          />
+        </Grid>
       </StackPanel>
-      <Grid MinWidth="{Binding MinWidth, ElementName=SideBarLeft}" />
-    </DockPanel>
+            <Grid MinWidth="{Binding MinWidth, ElementName=SideBarLeft}">
+                <StackPanel VerticalAlignment="Bottom">
+                    <Button
+    x:Name="btn_GamePass"
+    Margin="10"
+    Width="22"
+    Height="22"
+    HorizontalAlignment="Right"
+    ToolTip="{DynamicResource GamePassLogin}"
+    Click="btn_GamePass_Click"
+    Background="Transparent"
+    BorderThickness="0"
+    Padding="0"
+    Cursor="Hand">
+
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Grid Background="Transparent">
+                                    <Path
+                    x:Name="Path"
+                    Width="22"
+                    Height="22"
+                    Stretch="Uniform"
+                    Fill="#848484"
+                    Data="M30,0c16.6,0,30,13.4,30,30s-.7,7.5-2,10.9c-1.6-.2-3.3.5-4.6,1.4-1.2.8-2.3,1.8-3.3,2.8-1.5,1.5-2.9,3.2-4.4,4.7-.5.5-1.3,1.2-1.8.8-.6-.4,0-1.3.4-1.9,1.1-1.4,2.2-2.7,3.5-4.1,2.8-2.8,4.6-7.7,2.8-11.4-1.2-2.5-3.5-3.5-6-4.3.3-1.1.6-2.2.9-3.4-1.5,0-2.8,0-4.2.1,0,1.3-.1,2.4-.2,3.5-5.4,1.7-10.5,6.6-9.9,12.6.6,5.7,6.2,7.9,11.3,6.5-.4.8-.8,1.5-1.2,2.3-.6,1.5-.7,2.8.4,3.6,1.1.8,2.4.7,3.9-.3,1.4-1,2.7-2.3,3.9-3.5,1.4-1.5,2.8-3.4,4.5-4.5.7-.4,1.4-.7,2-.7-5.2,8.9-14.9,14.9-25.9,14.9C13.4,60,0,46.6,0,30,0,13.4,13.4,0,30,0Z M37.5,35.2c1.3-1.4,3.6-2.4,5.8-1.7,2,.6,2.9,2.4,3.1,2.6.2.4.5,1.2.6,2.1,0,1.4-.4,2.5-.7,3-.6,1.1-1.4,1.8-1.6,2h0c-.4.4-1.7,1.4-3.6,1.4-.4,0-1.7,0-3.1-.9-1.3-.9-1.8-2.1-1.9-2.5-.8-2-.2-4.5,1.4-6.2Z"
+                />
+                                </Grid>
+
+                                <ControlTemplate.Triggers>
+
+                                    <!-- 原版 MouseOver：#484848 -->
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter
+                        TargetName="Path"
+                        Property="Fill"
+                        Value="#484848" />
+                                    </Trigger>
+
+                                    <!-- 原版 Pressed：#3AC3F7 -->
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter
+                        TargetName="Path"
+                        Property="Fill"
+                        Value="#3AC3F7" />
+                                    </Trigger>
+
+                                    <!-- 原版 Disabled：#CCCCCC -->
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter
+                        TargetName="Path"
+                        Property="Fill"
+                        Value="#CCCCCC" />
+                                    </Trigger>
+
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+    <Border
+      x:Name="toastBorder"
+      Background="#CC333333"
+      CornerRadius="6"
+      HorizontalAlignment="Center"
+      VerticalAlignment="Bottom"
+      Margin="0 0 0 30"
+      Visibility="Collapsed"
+    >
+      <TextBlock x:Name="toastText" Foreground="White" FontSize="13" Margin="14 8" />
+    </Border>
   </Grid>
 </Page>

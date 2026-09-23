@@ -1,4 +1,4 @@
-<Page
+﻿<Page
   x:Class="Beanfun.Settings"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -65,17 +65,6 @@
                 Click="ManageAcc_Click"
               />
               <DockPanel>
-                <Label Content="{DynamicResource UpdateChannel}" />
-                <ComboBox
-                  x:Name="cb_UpdateChannel"
-                  SelectedIndex="0"
-                  SelectionChanged="cb_UpdateChannel_SelectionChanged"
-                >
-                  <ComboBoxItem Content="{DynamicResource Stable}" />
-                  <ComboBoxItem Content="{DynamicResource Development}" />
-                </ComboBox>
-              </DockPanel>
-              <DockPanel>
                 <Label Content="{DynamicResource Language}" />
                 <ComboBox x:Name="cb_Language" SelectionChanged="cb_Language_SelectionChanged" />
               </DockPanel>
@@ -97,16 +86,19 @@
                   <ComboBoxItem Content="Silver" />
                 </ComboBox>
               </DockPanel>
+              <DockPanel x:Name="LoginModePanel">
+                <Label Content="{DynamicResource LoginMode}" />
+                <ComboBox
+                  x:Name="cb_LoginMode"
+                  SelectedIndex="0"
+                  SelectionChanged="cb_LoginMode_SelectionChanged"
+                >
+                  <ComboBoxItem Content="{DynamicResource Regular}" />
+                  <ComboBoxItem Content="{DynamicResource QrCode}" />
+                </ComboBox>
+              </DockPanel>
             </StackPanel>
             <StackPanel>
-              <CheckBox
-                x:Name="ask_update"
-                Margin="2"
-                Content="{DynamicResource AutoCheckUpdate}"
-                Checked="ask_update_CheckedChanged"
-                Unchecked="ask_update_CheckedChanged"
-                IsChecked="True"
-              />
               <CheckBox
                 x:Name="autoStartGame"
                 Margin="2"

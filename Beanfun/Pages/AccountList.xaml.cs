@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -47,7 +47,7 @@ namespace Beanfun
                 return;
             try
             {
-                Clipboard.SetText(account.sid);
+                WindowsAPI.CopyText(account.sid);
             }
             catch { }
         }
@@ -109,9 +109,10 @@ namespace Beanfun
                 return;
             try
             {
-                Clipboard.SetText(t_Password.Text);
+                WindowsAPI.CopyText(t_Password.Text);
             }
             catch { }
+            App.MainWnd.ShowOtpCopiedHint(TryFindResource("CopyFinished") as string ?? "Copied");
         }
 
         private void btnAddServiceAccount_Click(object sender, RoutedEventArgs e)
@@ -242,9 +243,6 @@ namespace Beanfun
                 case "610074_T9":
                 case "610075_T9":
                     new MapleTools().Show();
-                    break;
-                case "610096_TE":
-                    new KartTools().Show();
                     break;
             }
         }

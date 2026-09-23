@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -57,7 +57,6 @@ namespace Beanfun
             autoStartGame.IsChecked = bool.Parse(
                 ConfigAppSettings.GetValue("autoStartGame", "false")
             );
-            ask_update.IsChecked = bool.Parse(ConfigAppSettings.GetValue("ask_update", "true"));
             minimize_to_tray.IsChecked = bool.Parse(
                 ConfigAppSettings.GetValue("minimize_to_tray", "false")
             );
@@ -71,13 +70,9 @@ namespace Beanfun
                 ConfigAppSettings.GetValue("autoKillPatcher", "true")
             );
 
-            cb_UpdateChannel.SelectedIndex = ConfigAppSettings
-                .GetValue("updateChannel", "Stable")
-                .Equals("Stable")
-                ? 0
-                : 1;
-
             cb_ThemeColor.Text = ConfigAppSettings.GetValue("ThemeColor", "#FF8201");
+
+            cb_LoginMode.SelectedIndex = App.LoginMethod == (int)LoginMethod.Regular ? 0 : 1;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -139,19 +134,7 @@ namespace Beanfun
             );
         }
 
-        private void ask_update_CheckedChanged(object sender, RoutedEventArgs e)
-        {
-            if (
-                App.MainWnd == null
-                || App.MainWnd.settingPage == null
-                || ask_update.IsChecked
-                    == bool.Parse(ConfigAppSettings.GetValue("ask_update", "true"))
-            )
-                return;
-            ConfigAppSettings.SetValue("ask_update", Convert.ToString((bool)ask_update.IsChecked));
-        }
-
-        private void tradLogin_CheckedChanged(object sender, RoutedEventArgs e)
+private void tradLogin_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if (
                 App.MainWnd == null
@@ -220,26 +203,7 @@ namespace Beanfun
             );
         }
 
-        private void cb_UpdateChannel_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (
-                App.MainWnd == null
-                || App.MainWnd.settingPage == null
-                || cb_UpdateChannel.SelectedIndex
-                    == (
-                        ConfigAppSettings.GetValue("updateChannel", "Stable").Equals("Stable")
-                            ? 0
-                            : 1
-                    )
-            )
-                return;
-            ConfigAppSettings.SetValue(
-                "updateChannel",
-                cb_UpdateChannel.SelectedIndex == 0 ? "Stable" : "Beta"
-            );
-        }
-
-        private void cb_ThemeColor_TextChanged(object sender, System.EventArgs e)
+private void cb_ThemeColor_TextChanged(object sender, System.EventArgs e)
         {
             try
             {
@@ -247,6 +211,18 @@ namespace Beanfun
                 ConfigAppSettings.SetValue("ThemeColor", cb_ThemeColor.Text);
             }
             catch { }
+        }
+
+        private void cb_LoginMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (
+                App.MainWnd == null
+                || App.MainWnd.settingPage == null
+                || cb_LoginMode.SelectedIndex
+                    == (ConfigAppSettings.GetValue("loginMethod", "0").Equals("0") ? 0 : 1)
+            )
+                return;
+            ConfigAppSettings.SetValue("loginMethod", cb_LoginMode.SelectedIndex == 0 ? "0" : "1");
         }
 
         private void ManageAcc_Click(object sender, RoutedEventArgs e)

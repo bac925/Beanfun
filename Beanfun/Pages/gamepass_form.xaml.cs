@@ -1,10 +1,14 @@
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace Beanfun
 {
     /// <summary>
-    /// gamepass_form.xaml 的交互逻辑
+    /// Gama Pass login page.
+    ///
+    /// The class/file names are kept as gamepass_form for compatibility with
+    /// the existing XAML project structure.
     /// </summary>
     public partial class gamepass_form : Page
     {
@@ -13,30 +17,55 @@ namespace Beanfun
             InitializeComponent();
         }
 
-        private async void btn_OpenGamePass_Click(object sender, RoutedEventArgs e)
+        private void btn_OpenGamePass_Click(object sender, RoutedEventArgs e)
         {
             btn_OpenGamePass.IsEnabled = false;
+
             try
             {
-                var client = new BeanfunClient();
-                string skey = await System.Threading.Tasks.Task.Run(() => client.GetSessionkey());
-                if (string.IsNullOrEmpty(skey))
+                /*
+                 * IMPORTANT:
+                 *
+                 * Do not call BeanfunClient.GetSessionkey() here.
+                 *
+                 * The old implementation created the beanfun session in
+                 * WebClient, extracted pSKey, then opened Login/Index in a
+                 * different WebView2 context. That split the login state across
+                 * two cookie/session containers and can now break redirects.
+                 *
+                 * GamePassBrowser now starts WebView2 from the official beanfun
+                 * entry URL so the entire Gama Pass flow remains in one browser
+                 * context.
+                 */
+                App.MainWnd.bfClient = new BeanfunClient();
+
+                var browser = new GamePassBrowser();
+
+                /*
+                 * The button is re-enabled when this window closes so the user
+                 * cannot accidentally create multiple simultaneous login
+                 * windows from repeated clicks.
+                 */
+                browser.Closed += (s, args) =>
                 {
-                    MessageBox.Show(
-                        Application.Current.TryFindResource("SessionKeyFailed") as string
-                    );
-                    return;
-                }
-                App.MainWnd.bfClient = client;
-                new GamePassBrowser(skey).Show();
+                    Dispatcher.Invoke(() =>
+                    {
+                        btn_OpenGamePass.IsEnabled = true;
+                    });
+                };
+
+                browser.Show();
             }
-            catch
-            {
-                MessageBox.Show(Application.Current.TryFindResource("ConnectionFailed") as string);
-            }
-            finally
+            catch (Exception ex)
             {
                 btn_OpenGamePass.IsEnabled = true;
+
+                MessageBox.Show(
+                    "Gama Pass 登入視窗開啟失敗。\r\n\r\n" + ex.Message,
+                    "Gama Pass",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
             }
         }
 

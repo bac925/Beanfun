@@ -25,6 +25,7 @@ namespace Beanfun
             );
             t_AppName.Foreground = brush;
             t_Author.Foreground = brush;
+            t_Modifier.Foreground = brush;
             t_Version.Foreground = brush;
             version.Foreground = brush;
         }
@@ -39,13 +40,7 @@ namespace Beanfun
                 App.MainWnd.frame.Content = App.MainWnd.return_page;
             App.MainWnd.return_page = null;
         }
-
-        private void UpdateCheck_Click(object sender, RoutedEventArgs e)
-        {
-            App.MainWnd.CheckUpdates(true);
-        }
-
-        private void MailContact_Click(object sender, RoutedEventArgs e)
+private void MailContact_Click(object sender, RoutedEventArgs e)
         {
             try
             {
