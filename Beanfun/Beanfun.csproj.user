@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_LastSelectedProfileId>D:\Downloads\Beanfun-ced0ee219e54e3b55af1610a422e4169c8b2966a\Beanfun\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="Tools\BeanfunClient.Account.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Tools\BeanfunClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Tools\BeanfunClient.Login.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Tools\BeanfunClient.OTP.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Tools\BeanfunClient.Verify.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+</Project>

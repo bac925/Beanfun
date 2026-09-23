@@ -1,11 +1,9 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Windows;
 
 namespace Beanfun
 {
-    /// <summary>
-    /// MapleTools.xaml 的交互逻辑
-    /// </summary>
     public partial class MapleTools : Window
     {
         public MapleTools()
@@ -13,39 +11,23 @@ namespace Beanfun
             InitializeComponent();
         }
 
-        private void Window_MouseLeftButtonDown(
-            object sender,
-            System.Windows.Input.MouseButtonEventArgs e
-        )
+        private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            this.DragMove();
+            DragMove();
         }
 
-        private void btn_PlayerReport_Click(object sender, RoutedEventArgs e)
+        private void btn_MapleKit_Click(object sender, RoutedEventArgs e)
         {
-            if (App.LoginRegion == "HK")
-                MessageBox.Show(TryFindResource("MsgPlayerReport") as string);
-            //new WebBrowser("https://event.beanfun.com/customerservice/PluginReporting/PluginBoard/PluginBoardJQ.aspx").Show();
-            new WebBrowser(
-                "https://event.beanfun.com/customerservice/PluginReporting/PlayerReport.aspx"
-            ).Show();
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://maple-kit.com/",
+                UseShellExecute = true,
+            });
         }
 
-        private void btn_VideoReport_Click(object sender, RoutedEventArgs e)
+        private void btn_GameMaintenance_Click(object sender, RoutedEventArgs e)
         {
-            new WebBrowser(
-                "https://event.beanfun.com/MapleStory/eventad/EventAD.aspx?EventADID=3453"
-            ).Show();
-        }
-
-        private void btn_EquipCalculator_Click(object sender, RoutedEventArgs e)
-        {
-            new EquipCalculator().Show();
-        }
-
-        private void btn_CoreCaculator_Click(object sender, RoutedEventArgs e)
-        {
-            new CoreCalculator().Show();
+            new GameMaintenanceWindow { Owner = this }.ShowDialog();
         }
 
         private void btn_Recycling_Click(object sender, RoutedEventArgs e)
